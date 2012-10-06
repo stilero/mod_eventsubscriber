@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="module" method="upgrade">
+	<name>Module Event Subscriber</name>
+	<author>Daniel Eliasson Stilero Webdesign http://www.stilero.com</author>
+	<creationDate>2012-okt-06</creationDate>
+	<copyright>Copyright (c) 2012-okt-06 Stilero Webdesign, Stilero AB. All rights reserved.</copyright>
+	<authorEmail>joomla@stilero.com</authorEmail>
+	<authorUrl>www.stilero.com</authorUrl>
+	<version>1.0</version>
+	<license>GPLv2</license>
+	<description>Subscriber for RSEventsPro!</description>
+	<install>
+            <sql>
+                <file driver="mysql" charset="utf8">sql/install.sql</file>
+            </sql>
+	</install>
+	<uninstall>
+            <sql>
+                <file driver="mysql" charset="utf8">sql/uninstall.sql</file>
+            </sql>
+	</uninstall>
+        <media folder="assets" destination="mod_eventsubscriber">
+            <folder>js</folder>
+            <folder>images</folder>
+            <folder>css</folder>
+            <filename>index.html</filename>
+        </media>
+	<files>
+            <filename module="mod_eventsubscriber">mod_eventsubscriber.php</filename>
+            <filename>mod_eventsubscriber.xml</filename>
+            <filename>index.html</filename>
+            <folder>tmpl</folder>
+            <folder>elements</folder>
+            <folder>assets</folder>
+            <folder>sql</folder>
+            <folder>helpers</folder>
+            <folder>classes</folder>
+	</files>
+	<languages folder="language">
+            <language tag="en-GB">en-GB.mod_eventsubscriber.ini</language>
+            <language tag="en-GB">en-GB.mod_eventsubscriber.sys.ini</language>
+        </languages>
+	<!-- Standard plugin parameters for Joomla! 1.5 -->	
+	<params addpath="/modules/mod_eventsubscriber/elements">
+		<param name="param_name" type="text"  default="" label="MOD_EVENTSUBSCRIBER_PARAMNAME" description="MOD_EVENTSUBSCRIBER_PARAMNAME_DESC"/>
+		<param name="param_name2" type="radio" default="1" label="MOD_EVENTSUBSCRIBER_PARAMNAME2" description="MOD_EVENTSUBSCRIBER_PARAMNAME2_DESC">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+                <param name="custom_field" type="customfieldname" default="" label="MOD_EVENTSUBSCRIBER_MOD_EVENTSUBSCRIBER_PARAMNAME" description="MOD_EVENTSUBSCRIBER_PARAMNAME_DESC"/>
+	</params>
+        <params group="advanced">
+            <param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+            <param name="cache" type="list" default="1" label="Caching" description="Cache the content of this module">
+                <option value="1">Use global</option>
+                <option value="0">No caching</option>
+            </param>
+            <param name="cache_time" type="text" default="900" label="Cache Time" description="Time before the module is re-cached" />
+        </params>
+	<!-- Standard plugin parameters for Joomla! 1.6+ -->
+        <config>
+            <fields name="params">
+                    <fieldset name="settings" label="MOD_EVENTSUBSCRIBER_SETTINGS" addfieldpath="/modules/mod_eventsubscriber/elements">
+                            <field name="custom_field" type="customfieldname" default="" label="MOD_EVENTSUBSCRIBER_PARAMNAME" description="MOD_EVENTSUBSCRIBER_PARAMNAME_DESC"/>
+                            <field name="param_name" type="text"  default="" label="MOD_EVENTSUBSCRIBER_PARAMNAME" description="MOD_EVENTSUBSCRIBER_PARAMNAME_DESC"/>
+                            <field name="param_name2" type="radio" default="1" label="MOD_EVENTSUBSCRIBER_PARAMNAME2" description="MOD_EVENTSUBSCRIBER_PARAMNAME2_DESC">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                            </field>
+                            <field type="spacer" default="MOD_EVENTSUBSCRIBER_SPACER"/>
+                    </fieldset>
+                    <fieldset name="other" label="MOD_EVENTSUBSCRIBER_FIELDSET">
+                            <field name="param_name" type="text"  default="" label="MOD_EVENTSUBSCRIBER_PARAMNAME" description="MOD_EVENTSUBSCRIBER_PARAMNAME_DESC"/>
+                            <field name="param_name2" type="radio" default="1" label="MOD_EVENTSUBSCRIBER_PARAMNAME2" description="MOD_EVENTSUBSCRIBER_PARAMNAME2_DESC">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                            </field>
+                            <field type="spacer" default="MOD_EVENTSUBSCRIBER_SPACER"/>
+                    </fieldset>
+                    <fieldset name="advanced">
+				<field name="layout" type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+				<field name="moduleclass_sfx" type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+				<field name="owncache" type="list" default="1"
+					label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC" >
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING
+					</option>
+				</field>
+
+				<field name="cache_time" type="text" default="900"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+			</fieldset>
+            </fields>
+        </config>
+	<administration>
+            <languages folder="language">
+                <language tag="en-GB">en-GB.mod_eventsubscriber.ini</language>
+                <language tag="en-GB">en-GB.mod_eventsubscriber.sys.ini</language>
+	    </languages>
+	</administration>
+</install>

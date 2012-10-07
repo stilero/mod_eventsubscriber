@@ -31,25 +31,33 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 $language =& JFactory::getLanguage();
 $language->load('mod_eventsubscriber');
 //Check dependencies
 jimport('joomla.application.component.helper');
+require_once (dirname(__FILE__).DS.'helpers'.DS.'modEventSubscriberScriptHelper.php');
+require_once (dirname(__FILE__).DS.'helpers'.DS.'modEventSubscriperHelper.php');
+
 if (!JComponentHelper::isEnabled('com_rseventspro', true)){
     JError::raiseError('500', JText::_('COMPONENTMISSING'));
 }
-
-// Set the layout correctly
-if($params->get('param_name')){
-    $params->set('layout', 'firstlayout');
-}else{
-    $params->def('layout', 'default');
+$user =& JFactory::getUser();
+if(!$user->guest){
+    // Set the layout correctly
+    if($params->get('param_name')){
+        $params->set('layout', 'firstlayout');
+    }else{
+        $params->def('layout', 'default');
+    }
+    modEventSubscriberScriptHelper::addJqueryJS();
+    modEventSubscriberScriptHelper::addBootstrapJS();
+    modEventSubscriberScriptHelper::addBootstrapCSS();
+    modEventSubscriperHelper::catchTask();
+    // Load the helper class
+    // Get the list of five star movies
+    //$list = modEventSubscriperHelper::getList($params);
+    // Get the layout path
+    $layout = $params->get('layout', 'default');
+    require(JModuleHelper::getLayoutPath('mod_eventsubscriber',$layout));
 }
-// Load the helper class
-require_once (dirname(__FILE__).DS.'helper.php');
-// Get the list of five star movies
-$list = modCriticsChoiceHelper::getList($params);
-// Get the layout path
-$layout = $params->get('layout', 'default');
-require(JModuleHelper::getLayoutPath('mod_eventsubscriber',$layout));

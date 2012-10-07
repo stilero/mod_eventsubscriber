@@ -4,7 +4,7 @@
  *
  * @version  1.0
  * @author Daniel Eliasson Stilero Webdesign http://www.stilero.com
- * @copyright  (C) 2012-okt-06 Stilero Webdesign, Stilero AB
+ * @copyright  (C) 2012-okt-07 Stilero Webdesign, Stilero AB
  * @category Module Layout
  * @license	GPLv2
  * 
@@ -13,7 +13,7 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * 
- * This file is part of default.
+ * This file is part of subscribe.
  * 
  * Module_Event_Subscriber is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,14 +32,8 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
-<div class="cssclass<?php echo $params->get('moduleclass_sfx'); ?>">
-    <?php
-    if(modEventSubscriperHelper::isViewingCategory()){
-        $subscriptionLayout = 'subscribe';
-        if(modEventSubscriperHelper::isSubscribing(modEventSubscriperHelper::getCurrentCategoryId())){
-            $subscriptionLayout = 'unsubscribe';
-        } 
-        require(JModuleHelper::getLayoutPath('mod_eventsubscriber',$subscriptionLayout));
-    }
-    ?>
-</div>
+<form method="post" class="form-horizontal<?php echo $params->get('moduleclass_sfx'); ?>">
+    <button id="btnSubscribe" type="submit" class="btn btn-info btn-small"><?php JText::_('MOD_EVENTSUBSCRIBER_SUBSCRIBE'); ?></button>
+    <input name="mod_eventsubscriber_task" value="subscribe" type="hidden">
+    <input name="mod_eventsubscriber_catid" value="<?php print modEventSubscriperHelper::getCurrentCategoryId() ?>" type="hidden">
+</form>

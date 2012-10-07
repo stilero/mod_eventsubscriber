@@ -1,11 +1,11 @@
 <?php
 /**
- * Module_Event_Subscriber
+ * Description of Module_Event_Subscriber
  *
  * @version  1.0
  * @author Daniel Eliasson Stilero Webdesign http://www.stilero.com
- * @copyright  (C) 2012-okt-06 Stilero Webdesign, Stilero AB
- * @category Module Layout
+ * @copyright  (C) 2012-okt-07 Stilero Webdesign, Stilero AB
+ * @category Module Helper
  * @license	GPLv2
  * 
  * Joomla! is free software. This version may have been modified pursuant
@@ -13,7 +13,7 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * 
- * This file is part of default.
+ * This file is part of modEventSubscriberScriptHelper.
  * 
  * Module_Event_Subscriber is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,15 +31,27 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access'); ?>
-<div class="cssclass<?php echo $params->get('moduleclass_sfx'); ?>">
-    <?php
-    if(modEventSubscriperHelper::isViewingCategory()){
-        $subscriptionLayout = 'subscribe';
-        if(modEventSubscriperHelper::isSubscribing(modEventSubscriperHelper::getCurrentCategoryId())){
-            $subscriptionLayout = 'unsubscribe';
-        } 
-        require(JModuleHelper::getLayoutPath('mod_eventsubscriber',$subscriptionLayout));
+defined('_JEXEC') or die('Restricted access'); 
+
+class modEventSubscriberScriptHelper{
+    
+    public static function addBootstrapJS(){
+        $document =& JFactory::getDocument();
+        $document->addScript(modEventSubscriberScriptHelper::getAssetsPath().'bootstrap/js/bootstrap.min.js');
     }
-    ?>
-</div>
+    
+    public static function addBootstrapCSS(){
+        $document =& JFactory::getDocument();
+        $document->addStyleSheet(modEventSubscriberScriptHelper::getAssetsPath().'bootstrap/css/bootstrap.min.css');
+    }
+    
+    public static function addJqueryJS(){
+        $document =& JFactory::getDocument();
+        $document->addScript('http://code.jquery.com/jquery-latest.js');
+    }
+    
+    public static function getAssetsPath(){
+        $path = JURI::base().'media/mod_eventsubscriber/';
+        return $path;
+    }
+}

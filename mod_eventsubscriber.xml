@@ -21,6 +21,7 @@
 	</uninstall>
         <media folder="assets" destination="mod_eventsubscriber">
             <folder>js</folder>
+            <folder>bootstrap</folder>
             <folder>images</folder>
             <folder>css</folder>
             <filename>index.html</filename>

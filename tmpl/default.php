@@ -33,7 +33,13 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
 <div class="cssclass<?php echo $params->get('moduleclass_sfx'); ?>">
+    <p>
+    <?php print $params->get('introtext'); ?>
+    </p>
     <?php
+    if($subscriptions != null){
+        require(JModuleHelper::getLayoutPath('mod_eventsubscriber','subscriptions'));
+    }
     if(modEventSubscriperHelper::isViewingCategory()){
         $subscriptionLayout = 'subscribe';
         if(modEventSubscriperHelper::isSubscribing(modEventSubscriperHelper::getCurrentCategoryId())){

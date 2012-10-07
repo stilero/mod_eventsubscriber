@@ -45,15 +45,19 @@ if (!JComponentHelper::isEnabled('com_rseventspro', true)){
 $user =& JFactory::getUser();
 if(!$user->guest){
     // Set the layout correctly
-    if($params->get('param_name')){
+    if($params->get('layout')){
         $params->set('layout', 'firstlayout');
     }else{
         $params->def('layout', 'default');
     }
-    modEventSubscriberScriptHelper::addJqueryJS();
-    modEventSubscriberScriptHelper::addBootstrapJS();
+    //modEventSubscriberScriptHelper::addJqueryJS();
+    //modEventSubscriberScriptHelper::addBootstrapJS();
     modEventSubscriberScriptHelper::addBootstrapCSS();
     modEventSubscriperHelper::catchTask();
+    $subscriptions = modEventSubscriperHelper::getEventsSinceLastVisit();
+    if(modEventSubscriperHelper::isViewingCategory()){
+        modEventSubscriperHelper::setLastVisit();
+    }
     // Load the helper class
     // Get the list of five star movies
     //$list = modEventSubscriperHelper::getList($params);

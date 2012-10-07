@@ -62,21 +62,7 @@
         <config>
             <fields name="params">
                     <fieldset name="settings" label="MOD_EVENTSUBSCRIBER_SETTINGS" addfieldpath="/modules/mod_eventsubscriber/elements">
-                            <field name="custom_field" type="customfieldname" default="" label="MOD_EVENTSUBSCRIBER_PARAMNAME" description="MOD_EVENTSUBSCRIBER_PARAMNAME_DESC"/>
-                            <field name="param_name" type="text"  default="" label="MOD_EVENTSUBSCRIBER_PARAMNAME" description="MOD_EVENTSUBSCRIBER_PARAMNAME_DESC"/>
-                            <field name="param_name2" type="radio" default="1" label="MOD_EVENTSUBSCRIBER_PARAMNAME2" description="MOD_EVENTSUBSCRIBER_PARAMNAME2_DESC">
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                            </field>
-                            <field type="spacer" default="MOD_EVENTSUBSCRIBER_SPACER"/>
-                    </fieldset>
-                    <fieldset name="other" label="MOD_EVENTSUBSCRIBER_FIELDSET">
-                            <field name="param_name" type="text"  default="" label="MOD_EVENTSUBSCRIBER_PARAMNAME" description="MOD_EVENTSUBSCRIBER_PARAMNAME_DESC"/>
-                            <field name="param_name2" type="radio" default="1" label="MOD_EVENTSUBSCRIBER_PARAMNAME2" description="MOD_EVENTSUBSCRIBER_PARAMNAME2_DESC">
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                            </field>
-                            <field type="spacer" default="MOD_EVENTSUBSCRIBER_SPACER"/>
+                            <field name="introtext" type="editor" default="" label="MOD_EVENTSUBSCRIBER_INTROTEXT" description="MOD_EVENTSUBSCRIBER_INTROTEXT_DESC"/>
                     </fieldset>
                     <fieldset name="advanced">
 				<field name="layout" type="modulelayout"

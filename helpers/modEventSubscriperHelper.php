@@ -35,26 +35,106 @@ defined('_JEXEC') or die('Restricted access');
 
 class modEventSubscriperHelper{
     
-    static function &getList(&$params){
-        $db =& JFactory::getDBO();
-        $count = (int) $params->get('count', 5);
-        $query = modEventSubscriperHelper::_buildQuery($count);
-        $db->setQuery($query);
-        $result = $db->loadObjectList();
-        return $result;
-    }
-    
-    static function &getSubscriptions(){
+    static function getCategoryIdsSubscribed(){
         $db =& JFactory::getDBO();
         $table = $db->nameQuote('#__eventsubscriber_subsctiptions');
         $useridKey = $db->nameQuote('userid');
         $user =& JFactory::getUser();
         $useridVal = $db->quote($user->id);
-        $query = ' SELECT * FROM ' . $table
+        $catKey = $db->nameQuote('category');
+        $query = ' SELECT '.$catKey.' FROM ' . $table
         . ' WHERE ' . $useridKey . ' = ' . $useridVal;
+        $db->setQuery($query);
+        $result = $db->loadResultArray();
+        return $result;
+    }
+    
+    static function getEventsSinceLastVisit(){
+        $lastVisit = modEventSubscriperHelper::getLastVisit();
+        $catIds = modEventSubscriperHelper::getCategoryIdsSubscribed();
+        $db =& JFactory::getDBO();
+        $eventTable = $db->nameQuote('#__rseventspro_events');
+        $catTable = $db->nameQuote('#__rseventspro_categories');
+        $taxTable = $db->nameQuote('#__rseventspro_taxonomy');
+        $countKey = $db->nameQuote('count');
+        $nameKey = $db->nameQuote('name');
+        $idKey = $db->nameQuote('id');
+        $ideKey = $db->nameQuote('ide');
+        $typeKey = $db->nameQuote('type');
+        $catVal = $db->quote('category');
+        $createdKey = $db->nameQuote('created');
+        $lastVisitVal = $db->quote($lastVisit);
+        $query = "SELECT COUNT(*) AS ".$countKey.","
+            .$catTable.".".$nameKey.","
+            .$catTable.".".$idKey
+            ." FROM ".$taxTable
+            ." INNER JOIN ".$catTable
+            ." ON ".$catTable.".".$idKey." = ".$taxTable.".".$idKey
+            ." LEFT JOIN ".$eventTable
+            ." ON ".$eventTable.".".$idKey." = ".$taxTable.".".$ideKey
+            ." WHERE ".$taxTable.".".$typeKey." = ".$catVal
+            ." AND ".$taxTable.".".$idKey." IN(".  implode(',', $catIds) .")"
+            ." AND ".$eventTable.".".$createdKey." > ".$lastVisitVal
+            ." GROUP BY (".$catTable.".".$nameKey.")";
         $db->setQuery($query);
         $result = $db->loadObjectList();
         return $result;
+    }
+    
+    static function getEventsIdsFromSubscribedCategories(){
+        $categories = modEventSubscriperHelper::getCategoryIdsSubscribed();
+        $db =& JFactory::getDBO();
+        $table = $db->nameQuote('#__rseventspro_taxonomy');
+        $ideKey = $db->nameQuote('ide');
+        $typeKey = $db->nameQuote('type');
+        $idKey = $db->nameQuote('id');
+        $typeVal = $db->quote('category');
+        $query = "SELECT DISTINCT ".$ideKey
+                ." FROM ".$table
+                ." WHERE ".$typeKey." = ".$typeVal
+                ." AND ".$idKey." IN(".implode(',', $categories).");";
+        $db->setQuery($query);
+        $result = $db->loadResultArray();
+        return $result;
+    }
+    
+    static function getLastVisit(){
+        $db =& JFactory::getDBO();
+        $table = $db->nameQuote('#__eventsubscriber_subsctiptions');
+        $useridKey = $db->nameQuote('userid');
+        $user =& JFactory::getUser();
+        $useridVal = $db->quote($user->id);
+        $lastVisitKey = $db->nameQuote('lastvisit');
+        $query = ' SELECT * FROM ' . $table
+                .' WHERE '.$useridKey.' = '.$useridVal
+                . ' ORDER BY ' . $lastVisitKey . ' DESC LIMIT 0,1;';
+        $db->setQuery($query);
+        $result = $db->loadObject();
+        if($result === null){
+            return '0000-00-00 00:00:00';
+        }else{
+            return $result->lastvisit;
+        }
+    }
+    
+    static function setLastVisit(){
+        $db =& JFactory::getDBO();
+        $table = $db->nameQuote('#__eventsubscriber_subsctiptions');
+        $useridKey = $db->nameQuote('userid');
+        $user =& JFactory::getUser();
+        $useridVal = (int)$user->id;
+        $lastVisitKey = $db->nameQuote('lastvisit');
+        jimport('joomla.utilities.date');
+        $date = new JDate(JRequest::getVar('created', '', 'post'));
+        $lastVisitVal = $db->quote($date->toMySQL());
+        $catKey = $db->nameQuote('category');
+        $catVal = (int)modEventSubscriperHelper::getCurrentCategoryId();
+        $query = ' UPDATE ' . $table
+                .' SET '.$lastVisitKey.' = '.$lastVisitVal
+                .' WHERE '.$useridKey.' = '.$useridVal
+                .' AND '.$catKey.' = '.$catVal;
+        $db->setQuery($query);
+        $db->query();
     }
     
     static function isSubscribing($catid = null){
@@ -125,11 +205,11 @@ class modEventSubscriperHelper{
         if($task == 'subscribe'){
             modEventSubscriperHelper::addSubscription($catid, $userid);
             $app =& JFactory::getApplication();
-            $app->enqueueMessage(JText::_('Subscription Added'));
+            $app->enqueueMessage(JText::_('MOD_EVENTSUBSCRIBER_SUB_ADDED'));
         }else if($task == 'unsubscribe'){
             modEventSubscriperHelper::removeSubscription($catid, $userid);
             $app =& JFactory::getApplication();
-            $app->enqueueMessage(JText::_('Subscription Removed'));
+            $app->enqueueMessage(JText::_('MOD_EVENTSUBSCRIBER_SUB_REMOVED'));
         }
     }
     
@@ -163,8 +243,6 @@ class modEventSubscriperHelper{
     static function removeSubscription($catid, $userid){
         $db =& JFactory::getDBO();
         $table = $db->nameQuote('#__eventsubscriber_subsctiptions');
-        $idKey = $db->nameQuote('id');
-        $lastvisitKey = $db->nameQuote('lastvisit');
         $useridKey = $db->nameQuote('userid');
         $useridVal = $db->quote($userid);
         $catKey = $db->nameQuote('category');

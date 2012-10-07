@@ -32,8 +32,10 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
+<div>
 <form method="post" class="form-horizontal<?php echo $params->get('moduleclass_sfx'); ?>">
-    <button id="btnUnSubscribe" type="submit" class="btn btn-warning btn-small"><?php JText::_('MOD_EVENTSUBSCRIBER_UNSUBSCRIBE'); ?></button>
+    <button id="btnUnSubscribe" type="submit" class="btn btn-warning btn-small"><?php print JText::_('MOD_EVENTSUBSCRIBER_UNSUBSCRIBE'); ?></button>
     <input name="mod_eventsubscriber_task" value="unsubscribe" type="hidden">
-    <input name="mod_eventsubscriber_catid" value="" type="hidden">
+    <input name="mod_eventsubscriber_catid" value="<?php print modEventSubscriperHelper::getCurrentCategoryId() ?>" type="hidden">
 </form>
+</div>

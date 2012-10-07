@@ -13,7 +13,7 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * 
- * This file is part of subscribe.
+ * This file is part of subscriptions.
  * 
  * Module_Event_Subscriber is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,10 +32,17 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
-<div>
-<form method="post" class="form-horizontal<?php echo $params->get('moduleclass_sfx'); ?>">
-    <button id="btnSubscribe" type="submit" class="btn btn-info btn-small"><?php print JText::_('MOD_EVENTSUBSCRIBER_SUBSCRIBE'); ?></button>
-    <input name="mod_eventsubscriber_task" value="subscribe" type="hidden">
-    <input name="mod_eventsubscriber_catid" value="<?php print modEventSubscriperHelper::getCurrentCategoryId() ?>" type="hidden">
-</form>
-</div>
+<p>
+<ul class="cssclass<?php echo $params->get('moduleclass_sfx'); ?>">
+    <?php $link = 'index.php?option=com_rseventspro&Itemid='.JRequest::getInt('Itemid').'&category=';?>
+    <?php foreach ($subscriptions as $subscription) : ?>
+    <li class="subscription<?php echo $params->get('moduleclass_sfx'); ?>">
+        <a href="<?php echo JRoute::_($link.$subscription->id.':'.$subscription->name); ?>" 
+           class="subscription<?php echo $params->get('moduleclass_sfx'); ?>">
+            <span class="label"><?php echo $subscription->name; ?></span>
+        </a>
+        <span class="badge badge-info"><?php echo $subscription->count; ?></span>
+    </li>
+    <?php endforeach; ?>
+</ul>
+</p>

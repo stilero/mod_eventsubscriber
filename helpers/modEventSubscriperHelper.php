@@ -49,36 +49,44 @@ class modEventSubscriperHelper{
         return $result;
     }
     
-    static function getEventsSinceLastVisit(){
-        $lastVisit = modEventSubscriperHelper::getLastVisit();
-        $catIds = modEventSubscriperHelper::getCategoryIdsSubscribed();
+    static function getEventsInCatSinceLastVisit($cat){
+        $lastVisit = modEventSubscriperHelper::getLastVisit($cat);
         $db =& JFactory::getDBO();
+        $countKey = $db->nameQuote('count');
         $eventTable = $db->nameQuote('#__rseventspro_events');
         $catTable = $db->nameQuote('#__rseventspro_categories');
         $taxTable = $db->nameQuote('#__rseventspro_taxonomy');
-        $countKey = $db->nameQuote('count');
-        $nameKey = $db->nameQuote('name');
-        $idKey = $db->nameQuote('id');
-        $ideKey = $db->nameQuote('ide');
-        $typeKey = $db->nameQuote('type');
-        $catVal = $db->quote('category');
-        $createdKey = $db->nameQuote('created');
-        $lastVisitVal = $db->quote($lastVisit);
+        $visitVal = $db->quote($lastVisit);
         $query = "SELECT COUNT(*) AS ".$countKey.","
-            .$catTable.".".$nameKey.","
-            .$catTable.".".$idKey
-            ." FROM ".$taxTable
-            ." INNER JOIN ".$catTable
-            ." ON ".$catTable.".".$idKey." = ".$taxTable.".".$idKey
-            ." LEFT JOIN ".$eventTable
-            ." ON ".$eventTable.".".$idKey." = ".$taxTable.".".$ideKey
-            ." WHERE ".$taxTable.".".$typeKey." = ".$catVal
-            ." AND ".$taxTable.".".$idKey." IN(".  implode(',', $catIds) .")"
-            ." AND ".$eventTable.".".$createdKey." > ".$lastVisitVal
-            ." GROUP BY (".$catTable.".".$nameKey.")";
+            ."c.name,"
+            ."c.id"
+            ." FROM ".$taxTable." t "
+            ." INNER JOIN ".$eventTable." e "
+            ." ON e.id = t.ide"
+            ." INNER JOIN ".$catTable." c "
+            ." ON c.id = t.id"
+            ." WHERE e.created > ".$visitVal
+            ." AND t.type = 'category'"
+            ." AND t.id = ".$cat
+            ." GROUP BY (c.name)";
         $db->setQuery($query);
         $result = $db->loadObjectList();
         return $result;
+    }
+    
+    static function getAllEventsSinceLastVisit(){
+        $catIds = modEventSubscriperHelper::getCategoryIdsSubscribed();
+        if($catIds === null){
+            return null;
+        }
+        $events = array();
+        foreach ($catIds as $catId) {
+            $newEvents = modEventSubscriperHelper::getEventsInCatSinceLastVisit($catId);
+            if(!empty($newEvents)){
+                $events = array_merge($events, $newEvents);
+            }
+        }
+        return $events;
     }
     
     static function getEventsIdsFromSubscribedCategories(){
@@ -98,15 +106,18 @@ class modEventSubscriperHelper{
         return $result;
     }
     
-    static function getLastVisit(){
+    static function getLastVisit($catid){
         $db =& JFactory::getDBO();
         $table = $db->nameQuote('#__eventsubscriber_subsctiptions');
         $useridKey = $db->nameQuote('userid');
         $user =& JFactory::getUser();
         $useridVal = $db->quote($user->id);
         $lastVisitKey = $db->nameQuote('lastvisit');
+        $catKey = $db->nameQuote('category');
+        $catVal = (int)$catid;
         $query = ' SELECT * FROM ' . $table
                 .' WHERE '.$useridKey.' = '.$useridVal
+                .' AND '.$catKey.' = '.$catid
                 . ' ORDER BY ' . $lastVisitKey . ' DESC LIMIT 0,1;';
         $db->setQuery($query);
         $result = $db->loadObject();

@@ -32,7 +32,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
-<div class="cssclass<?php echo $params->get('moduleclass_sfx'); ?>">
+<div id="eventsubscriber" class="cssclass<?php echo $params->get('moduleclass_sfx'); ?>">
     <p>
     <?php print $params->get('introtext'); ?>
     </p>

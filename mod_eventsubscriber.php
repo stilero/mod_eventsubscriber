@@ -54,7 +54,7 @@ if(!$user->guest){
     //modEventSubscriberScriptHelper::addBootstrapJS();
     modEventSubscriberScriptHelper::addBootstrapCSS();
     modEventSubscriperHelper::catchTask();
-    $subscriptions = modEventSubscriperHelper::getEventsSinceLastVisit();
+    $subscriptions = modEventSubscriperHelper::getAllEventsSinceLastVisit();
     if(modEventSubscriperHelper::isViewingCategory()){
         modEventSubscriperHelper::setLastVisit();
     }

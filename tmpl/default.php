@@ -32,10 +32,13 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
+<?php
+$isInCategory = modEventSubscriperHelper::isViewingCategory();
+$hasFoundSubscriptions = $subscriptions;
+?>
+<? if($isInCategory || $hasFoundSubscriptions) : ?>
 <div id="eventsubscriber" class="cssclass<?php echo $params->get('moduleclass_sfx'); ?>">
-    <p>
-    <?php print $params->get('introtext'); ?>
-    </p>
+    <p><?php print $params->get('introtext'); ?></p>
     <?php
     if($subscriptions != null){
         require(JModuleHelper::getLayoutPath('mod_eventsubscriber','subscriptions'));
@@ -49,3 +52,4 @@ defined('_JEXEC') or die('Restricted access'); ?>
     }
     ?>
 </div>
+<? endif;?>

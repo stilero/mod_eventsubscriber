@@ -33,6 +33,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
 <div>
+    <p><?php print JText::_('MOD_EVENTSUBSCRIBER_UNSUBSCRIBE_PRETEXT'); ?></p>
 <form method="post" class="form-horizontal<?php echo $params->get('moduleclass_sfx'); ?>">
     <button id="btnUnSubscribe" type="submit" class="btn btn-warning btn-small"><?php print JText::_('MOD_EVENTSUBSCRIBER_UNSUBSCRIBE'); ?></button>
     <input name="mod_eventsubscriber_task" value="unsubscribe" type="hidden">

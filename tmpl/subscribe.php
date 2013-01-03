@@ -33,6 +33,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
 <div>
+    <p><?php print JText::_('MOD_EVENTSUBSCRIBER_SUBSCRIBE_PRETEXT'); ?></p>
 <form method="post" class="form-horizontal<?php echo $params->get('moduleclass_sfx'); ?>">
     <button id="btnSubscribe" type="submit" class="btn btn-info btn-small"><?php print JText::_('MOD_EVENTSUBSCRIBER_SUBSCRIBE'); ?></button>
     <input name="mod_eventsubscriber_task" value="subscribe" type="hidden">

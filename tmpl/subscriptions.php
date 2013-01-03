@@ -32,6 +32,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
+<p><?php print JText::_('MOD_EVENTSUBSCRIBER_NEW_EVENTS_FOUND'); ?></p>
 <p>
 <ul class="cssclass<?php echo $params->get('moduleclass_sfx'); ?>">
     <?php $link = 'index.php?option=com_rseventspro&Itemid='.JRequest::getInt('Itemid').'&category=';?>

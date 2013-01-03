@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install version="1.5" type="module" method="upgrade">
+<extension version="2.5" type="module" method="upgrade">
 	<name>Module Event Subscriber</name>
 	<author>Daniel Eliasson Stilero Webdesign http://www.stilero.com</author>
 	<creationDate>2012-okt-06</creationDate>
@@ -43,23 +43,6 @@
             <language tag="sv-SE">sv-SE.mod_eventsubscriber.ini</language>
             <language tag="sv-SE">sv-SE.mod_eventsubscriber.sys.ini</language>
         </languages>
-	<!-- Standard plugin parameters for Joomla! 1.5 -->	
-	<params addpath="/modules/mod_eventsubscriber/elements">
-		<param name="param_name" type="text"  default="" label="MOD_EVENTSUBSCRIBER_PARAMNAME" description="MOD_EVENTSUBSCRIBER_PARAMNAME_DESC"/>
-		<param name="param_name2" type="radio" default="1" label="MOD_EVENTSUBSCRIBER_PARAMNAME2" description="MOD_EVENTSUBSCRIBER_PARAMNAME2_DESC">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-                <param name="custom_field" type="customfieldname" default="" label="MOD_EVENTSUBSCRIBER_MOD_EVENTSUBSCRIBER_PARAMNAME" description="MOD_EVENTSUBSCRIBER_PARAMNAME_DESC"/>
-	</params>
-        <params group="advanced">
-            <param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
-            <param name="cache" type="list" default="1" label="Caching" description="Cache the content of this module">
-                <option value="1">Use global</option>
-                <option value="0">No caching</option>
-            </param>
-            <param name="cache_time" type="text" default="900" label="Cache Time" description="Time before the module is re-cached" />
-        </params>
 	<!-- Standard plugin parameters for Joomla! 1.6+ -->
         <config>
             <fields name="params">
@@ -94,4 +77,4 @@
                 <language tag="sv-SE">sv-SE.mod_eventsubscriber.sys.ini</language>
 	    </languages>
 	</administration>
-</install>
+</extension>

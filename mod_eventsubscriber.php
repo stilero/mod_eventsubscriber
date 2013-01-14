@@ -2,7 +2,7 @@
 /**
  * Module_Event_Subscriber
  *
- * @version  1.0
+ * @version  1.1
  * @author Daniel Eliasson Stilero Webdesign http://www.stilero.com
  * @copyright  (C) 2012-okt-06 Stilero Webdesign, Stilero AB
  * @category Modules
@@ -38,6 +38,9 @@ $language->load('mod_eventsubscriber');
 jimport('joomla.application.component.helper');
 require_once (dirname(__FILE__).DS.'helpers'.DS.'modEventSubscriberScriptHelper.php');
 require_once (dirname(__FILE__).DS.'helpers'.DS.'modEventSubscriperHelper.php');
+JLoader::register('RseventsproHelperRoute', JPATH_SITE.DS.'components'.DS.'com_rseventspro'.DS.'helpers'.DS.'route.php');
+JLoader::register('rseventsproHelper', JPATH_SITE.DS.'components'.DS.'com_rseventspro'.DS.'helpers'.DS.'rseventspro.php');
+
 
 if (!JComponentHelper::isEnabled('com_rseventspro', true)){
     JError::raiseError('500', JText::_('COMPONENTMISSING'));
@@ -45,10 +48,13 @@ if (!JComponentHelper::isEnabled('com_rseventspro', true)){
 $user =& JFactory::getUser();
 if(!$user->guest){
     // Set the layout correctly
-    if($params->get('layout')){
-        $params->set('layout', 'firstlayout');
-    }else{
-        $params->def('layout', 'default');
+//    if($params->get('layout')){
+//        $params->set('layout', 'firstlayout');
+//    }else{
+//        $params->def('layout', 'default');
+//    }
+    if(!$params->get('layout')){
+        $params->set('layout', 'default');
     }
     //modEventSubscriberScriptHelper::addJqueryJS();
     //modEventSubscriberScriptHelper::addBootstrapJS();
@@ -58,6 +64,9 @@ if(!$user->guest){
     if(modEventSubscriperHelper::isViewingCategory()){
         modEventSubscriperHelper::setLastVisit();
     }
+    $itemid = $params->get('itemid');
+    $itemid = !empty($itemid) ? $itemid : RseventsproHelperRoute::getEventsItemid();
+
     // Load the helper class
     // Get the list of five star movies
     //$list = modEventSubscriperHelper::getList($params);

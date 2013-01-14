@@ -49,6 +49,19 @@ class modEventSubscriperHelper{
         return $result;
     }
     
+    static function getCategories(){
+        $userid =& JFactory::getUser()->id;
+        $db =& JFactory::getDBO();
+        $query = $db->getQuery(true);
+        $query->select('a.category, b.name');
+        $query->from($db->nameQuote('#__eventsubscriber_subsctiptions').' AS a ');
+        $query->leftJoin($db->nameQuote('#__rseventspro_categories').' AS b ON b.id = a.category');
+        $query->where('a.userid = '.(int)$userid);
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
+        return $result;
+    }
+    
     static function getEventsInCatSinceLastVisit($cat){
         $lastVisit = modEventSubscriperHelper::getLastVisit($cat);
         $db =& JFactory::getDBO();

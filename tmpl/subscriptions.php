@@ -2,7 +2,7 @@
 /**
  * Module_Event_Subscriber
  *
- * @version  1.0
+ * @version  1.1
  * @author Daniel Eliasson Stilero Webdesign http://www.stilero.com
  * @copyright  (C) 2012-okt-07 Stilero Webdesign, Stilero AB
  * @category Module Layout
@@ -35,10 +35,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <p><?php print JText::_('MOD_EVENTSUBSCRIBER_NEW_EVENTS_FOUND'); ?></p>
 <p>
 <ul class="cssclass<?php echo $params->get('moduleclass_sfx'); ?>">
-    <?php $link = 'index.php?option=com_rseventspro&Itemid='.JRequest::getInt('Itemid').'&category=';?>
+    <?php //$link = 'index.php?option=com_rseventspro&Itemid='.JRequest::getInt('Itemid').'&category=';?>
     <?php foreach ($subscriptions as $subscription) : ?>
+    <?php         
+        $link = rseventsproHelper::route('index.php?option=com_rseventspro&category='.rseventsproHelper::sef($subscription->id,$subscription->name),true,$itemid);
+    ?>
     <li class="subscription<?php echo $params->get('moduleclass_sfx'); ?>">
-        <a href="<?php echo JRoute::_($link.$subscription->id.':'.$subscription->name); ?>" 
+        <a href="<?php echo $link; ?>" 
            class="subscription<?php echo $params->get('moduleclass_sfx'); ?>">
             <span class="label"><?php echo $subscription->name; ?></span>
         </a>
